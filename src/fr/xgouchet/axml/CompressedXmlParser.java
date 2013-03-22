@@ -139,7 +139,8 @@ public class CompressedXmlParser {
 				break;
 			default:
 				mParserOffset += WORD_SIZE;
-				Log.w(TAG, "Unknown word 0x" + Integer.toHexString(word0));
+				Log.w(TAG, "Unknown word 0x" + Integer.toHexString(word0)
+						+ " @" + mParserOffset);
 				break;
 			}
 		}
@@ -495,8 +496,9 @@ public class CompressedXmlParser {
 			res = String.format("?id/0x%08X", data);
 			break;
 		default:
-			Log.i(TAG, "(type=" + Integer.toHexString(type) + ") : " + data
-					+ " (0x" + Integer.toHexString(data) + ")");
+			Log.w(TAG, "(type=" + Integer.toHexString(type) + ") : " + data
+					+ " (0x" + Integer.toHexString(data) + ") @"
+					+ mParserOffset);
 			res = String.format("%08X/0x%08X", type, data);
 			break;
 		}
