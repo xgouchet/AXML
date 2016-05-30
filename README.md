@@ -3,8 +3,28 @@ AXML
 
 AXML is a library designed to parse binary Android XML files (ie : XML files compressed by the Android AAPT tool). This library was first designed to be used inside the Axel app, available on [Google Play](https://play.google.com/store/apps/details?id=fr.xgouchet.xmleditor) and [GitHub](https://github.com/xgouchet/Axel). 
 
-USAGE
+[![Release](https://jitpack.io/v/User/Repo.svg)](https://jitpack.io/#User/Repo)
+
+LINK
 =====
+
+To add this library to your build, add the following line to your project's gradle : 
+
+    allprojects {
+		repositories {
+			...
+			maven { url "https://jitpack.io" }
+		}
+	}
+	
+Then you can just add the dependency like that : 
+
+	dependencies {
+		compile 'com.github.xgouchet:AXML:v1.0'
+	}
+
+USAGE
+===== 
 
 You can use the parser either as Sax or Dom. 
 
