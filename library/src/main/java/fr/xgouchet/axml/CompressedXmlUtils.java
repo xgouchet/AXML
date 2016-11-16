@@ -6,45 +6,55 @@ import java.io.InputStream;
 
 public final class CompressedXmlUtils {
 
-	public static boolean isCompressedXml(final InputStream input) {
-		boolean result;
+    /**
+     * @param input an input stream
+     * @return if the given input stream looks like an AXML document
+     */
+    public static boolean isCompressedXml(final InputStream input) {
+        if (input == null) return false;
 
-		try {
-			final byte[] header = new byte[4];
-			input.read(header, 0, 4);
+        boolean result;
 
-			result = true;
-			result &= (header[0] == 0x03);
-			result &= (header[1] == 0x00);
-			result &= (header[2] == 0x08);
-			result &= (header[3] == 0x00);
+        try {
+            final byte[] header = new byte[4];
+            int read = input.read(header, 0, 4);
+            if (read < 4) return false;
 
-		} catch (Exception e) {
-			result = false;
-		} finally {
-			try {
-				input.close();
-			} catch (Exception e) {
-				// ignore this exception
-			}
-		}
+            result = (header[0] == 0x03)
+                    && (header[1] == 0x00)
+                    && (header[2] == 0x08)
+                    && (header[3] == 0x00);
 
-		return result;
-	}
+        } catch (Exception e) {
+            result = false;
+        } finally {
+            try {
+                input.close();
+            } catch (Exception e) {
+                // ignore this exception
+            }
+        }
 
-	public static boolean isCompressedXml(final File source) {
-		boolean result;
+        return result;
+    }
 
-		try {
-			final InputStream input = new FileInputStream(source.getPath());
-			result = isCompressedXml(input);
-		} catch (Exception e) {
-			result = false;
-		}
+    /**
+     * @param source a source file
+     * @return if the given file looks like an AXML file
+     */
+    public static boolean isCompressedXml(final File source) {
+        boolean result;
 
-		return result;
-	}
+        try {
+            final InputStream input = new FileInputStream(source.getPath());
+            result = isCompressedXml(input);
+        } catch (Exception e) {
+            result = false;
+        }
 
-	private CompressedXmlUtils() {
-	}
+        return result;
+    }
+
+    private CompressedXmlUtils() {
+    }
 }
