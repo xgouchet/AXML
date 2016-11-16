@@ -17,7 +17,7 @@ public class CompressedXmlDomListener implements CompressedXmlParserListener {
      */
     public CompressedXmlDomListener() throws ParserConfigurationException {
         mBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-        mStack = new Stack<Node>();
+        mStack = new Stack<>();
     }
 
     public void startDocument() {
@@ -76,7 +76,7 @@ public class CompressedXmlDomListener implements CompressedXmlParserListener {
     }
 
     /**
-     *
+     * @return the parsed document
      */
     public Document getDocument() {
         return mDocument;

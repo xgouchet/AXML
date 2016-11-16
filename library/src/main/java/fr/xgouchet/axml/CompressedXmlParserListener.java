@@ -80,7 +80,7 @@ public interface CompressedXmlParserListener {
 	void text(String data);
 
 	/**
-	 * Receive notification of character data (in a <![CDATA[ ]]> block).
+	 * Receive notification of character data (in a &lt;![CDATA[ ]]&gt; block).
 	 * 
 	 * @param data
 	 *            the text data
@@ -96,8 +96,6 @@ public interface CompressedXmlParserListener {
 	 *            the processing instruction data, or null if none was supplied.
 	 *            The data does not include any whitespace separating it from
 	 *            the target
-	 * @throws org.xml.sax.SAXException
-	 *             any SAX exception, possibly wrapping another exception
 	 */
 	void processingInstruction(String target, String data);
 }
