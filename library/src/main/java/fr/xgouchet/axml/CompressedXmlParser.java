@@ -158,7 +158,7 @@ public class CompressedXmlParser {
      * <li>1st word : chunk size</li>
      * <li>2nd word : number of string in the string table</li>
      * <li>3rd word : number of styles in the string table</li>
-     * <li>4th word : ???? (0)</li>
+     * <li>4th word : flags - sorted/utf8 flag (0)</li>
      * <li>5th word : Offset to String data</li>
      * <li>6th word : Offset to style data</li>
      * </ul>
@@ -215,7 +215,7 @@ public class CompressedXmlParser {
      * <li>0th word : 0x00100100 = Start NS / 0x00100101 = end NS</li>
      * <li>1st word : chunk size</li>
      * <li>2nd word : line this tag appeared</li>
-     * <li>3rd word : ??? (always 0xFFFFFF)</li>
+     * <li>3rd word : optional xml comment for element (usually 0xFFFFFF)</li>
      * <li>4th word : index of namespace prefix in StringIndexTable</li>
      * <li>5th word : index of namespace uri in StringIndexTable</li>
      * </ul>
@@ -245,13 +245,13 @@ public class CompressedXmlParser {
      * <li>0th word : 0x00100102 = Start_Tag</li>
      * <li>1st word : chunk size</li>
      * <li>2nd word : line this tag appeared in the original file</li>
-     * <li>3rd word : ??? (always 0xFFFFFF)</li>
+     * <li>3rd word : optional xml comment for element (usually 0xFFFFFF)</li>
      * <li>4th word : index of namespace uri in StringIndexTable, or 0xFFFFFFFF
      * for default NS</li>
      * <li>5th word : index of element name in StringIndexTable</li>
-     * <li>6th word : ???</li>
+     * <li>6th word : size of attribute structures to follow</li>
      * <li>7th word : number of attributes following the start tag</li>
-     * <li>8th word : ??? (0)</li>
+     * <li>8th word : index of id attribute (0 if none)</li>
      * </ul>
      */
     private void parseStartTag() {
@@ -337,7 +337,7 @@ public class CompressedXmlParser {
      * <li>0th word : 0x00100104 = Text</li>
      * <li>1st word : chunk size</li>
      * <li>2nd word : line this element appeared in the original document</li>
-     * <li>3rd word : ??? (always 0xFFFFFFFF)</li>
+     * <li>3rd word : optional xml comment for element (usually 0xFFFFFF)</li>
      * <li>4rd word : string index in string table</li>
      * <li>5rd word : ??? (always 8)</li>
      * <li>6rd word : ??? (always 0)</li>
@@ -360,7 +360,7 @@ public class CompressedXmlParser {
      * <li>0th word : 0x00100103 = End_Tag</li>
      * <li>1st word : chunk size</li>
      * <li>2nd word : line this tag appeared in the original file</li>
-     * <li>3rd word : ??? (always 0xFFFFFFFF)</li>
+     * <li>3rd word : optional xml comment for element (usually 0xFFFFFF)</li>
      * <li>4th word : index of namespace name in StringIndexTable, or 0xFFFFFFFF
      * for default NS</li>
      * <li>5th word : index of element name in StringIndexTable</li>
