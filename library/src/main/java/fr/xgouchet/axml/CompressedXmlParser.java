@@ -258,7 +258,7 @@ public class CompressedXmlParser {
         // get tag info
         final int uriIdx = getLEWord(mParserOffset + (4 * WORD_SIZE));
         final int nameIdx = getLEWord(mParserOffset + (5 * WORD_SIZE));
-        final int attrCount = getLEWord(mParserOffset + (7 * WORD_SIZE));
+        final int attrCount = getLEShort(mParserOffset + (7 * WORD_SIZE));
 
         final String name = getString(nameIdx);
         String uri, qname;
@@ -437,6 +437,16 @@ public class CompressedXmlParser {
                 | ((mData[off + 2] << 16) & 0x00ff0000)
                 | ((mData[off + 1] << 8) & 0x0000ff00)
                 | ((mData[off + 0] << 0) & 0x000000ff);
+    }
+
+    /**
+     * @param off the offset of the word to read
+     * @return value of a Little Endian 16 bit word from the byte array at offset
+     * off.
+     */
+    private int getLEShort(final int off) {
+        return ((mData[off + 1] << 8) & 0xff00)
+               | ((mData[off + 0] << 0) & 0x00ff);
     }
 
     /**
