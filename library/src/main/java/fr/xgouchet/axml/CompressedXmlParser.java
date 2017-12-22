@@ -74,6 +74,29 @@ public class CompressedXmlParser {
 
     }
 
+    public void parse(byte[] data,
+                      final CompressedXmlParserListener listener) throws IOException {
+
+        if (listener == null) {
+            throw new IllegalArgumentException(
+                    "CompressedXmlParser Listener can' be null");
+        }
+        mListener = listener;
+
+        mData = data;
+        // parseCompressedHeader();
+        parseCompressedXml();
+
+    }
+
+    public Document parseDOM(byte[] data) throws IOException,
+            ParserConfigurationException {
+        CompressedXmlDomListener dom = new CompressedXmlDomListener();
+
+        parse(data, dom);
+
+        return dom.getDocument();
+    }
     /**
      * Parses the xml data in the given file,
      *
@@ -405,9 +428,11 @@ public class CompressedXmlParser {
      *               (and not the whole data array)
      * @return the String
      */
-    private String getStringFromStringTable(final int offset) {
+    private String getStringFromStringTable(int offset) {
         int strLength;
-        byte chars[];
+        StringBuilder stringBuilder = new StringBuilder();
+        byte[] chars;
+
         if (mData[offset + 1] == mData[offset]) {
             strLength = mData[offset];
             chars = new byte[strLength];// NOPMD
@@ -416,14 +441,27 @@ public class CompressedXmlParser {
             }
         } else {
 
-            strLength = ((mData[offset + 1] << 8) & 0xFF00)
-                    | (mData[offset] & 0xFF);
-            chars = new byte[strLength]; // NOPMD
-            for (int i = 0; i < strLength; i++) {
-                chars[i] = mData[offset + 2 + (i * 2)]; // NOPMD
-            }
+//          ------------------- orig --------------------
+//            strLength = ((mData[offset + 1] << 8) & 0xFF00)
+//                    | (mData[offset] & 0xFF);
+//            chars = new byte[strLength]; // NOPMD
+//            for (int i = 0; i < strLength; i++) {
+//                chars[i] = mData[offset + 2 + (i * 2)]; // NOPMD
+//            }
 
+//          --------------------- new ---------------------
+            strLength = ((mData[offset + 1] << 8) & 0xff) | (mData[offset] & 0xff);
+            offset += 2;
+            for(int i = 0; i < strLength; i++)
+            {
+                byte hByte = mData[offset + (i * 2 + 1)];
+                byte lByte = mData[offset + (i * 2)];
+                char c = (char) (((hByte << 8) & 0xFF00) | (lByte & 0xff));
+                stringBuilder.append(c);
+            }
+            return stringBuilder.toString();
         }
+
         return new String(chars);
     }
 
@@ -446,7 +484,7 @@ public class CompressedXmlParser {
      */
     private int getLEShort(final int off) {
         return ((mData[off + 1] << 8) & 0xff00)
-               | ((mData[off + 0] << 0) & 0x00ff);
+                | ((mData[off + 0] << 0) & 0x00ff);
     }
 
     /**
