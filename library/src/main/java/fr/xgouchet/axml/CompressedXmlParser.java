@@ -462,7 +462,7 @@ public class CompressedXmlParser {
                 res = getString(data);
                 break;
             case TYPE_DIMEN:
-                res = Integer.toString(data >> 8) + DIMEN[data & 0xFF];
+                res = Integer.toString(data >> 8) + DIMEN[data & 0x0F];
                 break;
             case TYPE_FRACTION:
                 double fracValue = (((double) data) / ((double) 0x7FFFFFFF));
